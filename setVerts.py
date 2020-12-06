@@ -3,7 +3,6 @@ import numpy as np
 import cv2
 from libs.plyClass import Ply
 
-
 sameMin = []
 sameMax = []
 

@@ -1,1 +1,2 @@
-./mesh
+./mesh/*
+mesh/moon.ply
