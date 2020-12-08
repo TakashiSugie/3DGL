@@ -13,6 +13,7 @@ class Ply:
         if mesh_fi:
             self.plyName = mesh_fi
             self.ClassReadPly()
+            self.setAlpha = False
             self.setInfos()
         elif imgIdx:
             # img = cv2.imread(imgPath)
@@ -92,12 +93,14 @@ class Ply:
             str_info = [float(v) for v in v_info.split("\n")[0].split(" ")]
             if len(str_info) == 6:
                 vx, vy, vz, r, g, b = str_info
-            else:
-                vx, vy, vz, r, g, b, _ = str_info
-            vertsList.append([vx, vy, vz])
-            # colorsList.append([r / 255.0, g / 255.0, b / 255.0])
-            colorsList.append([r, g, b])
+                colorsList.append([r, g, b])
 
+            else:
+                vx, vy, vz, r, g, b, alpha = str_info
+                colorsList.append([r, g, b, alpha])
+                self.setAlpha = True
+
+            vertsList.append([vx, vy, vz])
         self.verts_np = np.array(vertsList)
         self.colors_np = np.array(colorsList)
 
@@ -164,6 +167,10 @@ class Ply:
     def changeRound(self, roundV=4, roundC=0):
         self.verts_np = np.round(self.verts_np, decimals=roundV)
         self.colors_np = np.round(self.colors_np, decimals=roundC)
+
+    def changeAlpha(self, alpha=255):
+        alpha = np.full(len(self.colors_np), alpha)
+        self.colors_np[:, 3] = alpha
 
 
 if __name__ == "__main__":
